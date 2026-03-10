@@ -9,6 +9,7 @@
  
 ### Backlog (JIRA):
 <img width="1881" height="792" alt="image" src="https://github.com/user-attachments/assets/7dda06c3-8412-475d-b691-4e9871f714d6" />
+
 * **SCRUM 1** - [Link para o scrum 1](https://cesar-team-fitr7l7q.atlassian.net/browse/SCRUM-1)
 * **SCRUM 2** - [Link para o scrum 2](https://cesar-team-fitr7l7q.atlassian.net/browse/SCRUM-2)
 * **SCRUM 3** - [Link para o scrum 3](https://cesar-team-fitr7l7q.atlassian.net/browse/SCRUM-3)
