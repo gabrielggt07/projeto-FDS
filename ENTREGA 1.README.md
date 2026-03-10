@@ -1,12 +1,12 @@
 # projeto-FDS
 
-##Entrega 01 - (16/03):
+## Entrega 01 - (16/03):
 ### Historias do usuário: 
-#### Documento com as historias e cenarios BDD :
+### Documento com as historias e cenarios BDD :
 
-####Sprint Board (JIRA): <img width="1895" height="792" alt="Link para o print Board" src="https://github.com/user-attachments/assets/d2712e2a-83ed-44dd-9098-2f40e14d32f1" />
+### Sprint Board (JIRA): [Link para o Sprint Board](https://github.com/user-attachments/assets/d2712e2a-83ed-44dd-9098-2f40e14d32f1) 
 
-####Backlog (JIRA):
+### Backlog (JIRA):
 SCRUM 1 - [Link para o scrum 1](https://cesar-team-fitr7l7q.atlassian.net/browse/SCRUM-1)
 SCRUM 2 - [Link para o scrum 2](https://cesar-team-fitr7l7q.atlassian.net/browse/SCRUM-2)
 SCRUM 3 - [Link para o scrum 3](https://cesar-team-fitr7l7q.atlassian.net/browse/SCRUM-3)
