@@ -6,9 +6,7 @@
 
 ### Sprint Board (JIRA):
 <img width="1903" height="823" alt="image" src="https://github.com/user-attachments/assets/580f6635-26c8-45b5-a276-24950ce4ddd1" />
-
-[Link para o Sprint Board](https://github.com/user-attachments/assets/d2712e2a-83ed-44dd-9098-2f40e14d32f1) 
-
+ 
 ### Backlog (JIRA):
 <img width="1881" height="792" alt="image" src="https://github.com/user-attachments/assets/7dda06c3-8412-475d-b691-4e9871f714d6" />
 * **SCRUM 1** - [Link para o scrum 1](https://cesar-team-fitr7l7q.atlassian.net/browse/SCRUM-1)
