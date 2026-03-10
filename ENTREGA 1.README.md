@@ -5,10 +5,10 @@
 ### Documento com as historias e cenarios BDD :
 
 ### Sprint Board (JIRA):
-<img width="1903" height="823" alt="image" src="https://github.com/user-attachments/assets/580f6635-26c8-45b5-a276-24950ce4ddd1" />
+[Link para o Sprint Board](https://github.com/user-attachments/assets/580f6635-26c8-45b5-a276-24950ce4ddd1)
  
 ### Backlog (JIRA):
-<img width="1881" height="792" alt="image" src="https://github.com/user-attachments/assets/7dda06c3-8412-475d-b691-4e9871f714d6" />
+[Link para o Backlog](https://github.com/user-attachments/assets/7dda06c3-8412-475d-b691-4e9871f714d6)
 
 * **SCRUM 1** - [Link para o scrum 1](https://cesar-team-fitr7l7q.atlassian.net/browse/SCRUM-1)
 * **SCRUM 2** - [Link para o scrum 2](https://cesar-team-fitr7l7q.atlassian.net/browse/SCRUM-2)
