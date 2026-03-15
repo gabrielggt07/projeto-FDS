@@ -2,6 +2,7 @@
 
 ## Entrega 01 - (16/03):
 ### Documento com as historias e cenarios BDD :
+[Link para Docs](https://docs.google.com/document/d/1hgWuafDEP4vHfk6xeAOkgZfaSC_8OXC-M2SyGGLFeAE/edit?tab=t.0)
 
 ### Sprint Board (JIRA):
 [Link para o Sprint Board](https://github.com/user-attachments/assets/580f6635-26c8-45b5-a276-24950ce4ddd1)
