@@ -9,6 +9,7 @@
  
 ### Backlog (JIRA):
 [Link para o Jira](https://cesar-team-fitr7l7q.atlassian.net/jira/software/projects/SCRUM/boards/34)
+
 [Link para o Backlog](https://cesar-team-fitr7l7q.atlassian.net/jira/software/projects/SCRUM/boards/34/backlog)
 
 * **SCRUM 1** - [Link para o scrum 1](https://cesar-team-fitr7l7q.atlassian.net/browse/SCRUM-1)
