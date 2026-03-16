@@ -18,4 +18,7 @@
 * **SCRUM 6** - [Link para o scrum 6](https://cesar-team-fitr7l7q.atlassian.net/browse/SCRUM-6)
 * **SCRUM 7** - [Link para o scrum 7](https://cesar-team-fitr7l7q.atlassian.net/browse/SCRUM-7)
 
+## Link para screencast: 
+[Link para o screencast](https://youtu.be/kJDK5AWO-w8?si=KTadK9UZGcNILxKG)
+
 
