@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 style="color:white;">Dashboard ⚡</h1>
+
+<div class="cards">
+
+    <div class="card-box">
+        <h3>Usuários</h3>
+        <p>120</p>
+    </div>
+
+    <div class="card-box">
+        <h3>Consumo</h3>
+        <p>450 kW</p>
+    </div>
+
+    <div class="card-box">
+        <h3>Receita</h3>
+        <p>R$ 12.000</p>
+    </div>
+
+</div>
+
+<!-- MAPA -->
+<div id="map"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    var map = L.map('map').setView([-8.0476, -34.8770], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    var pontos = [
+        [-8.0476, -34.8770],
+        [-8.05, -34.90],
+        [-8.04, -34.88]
+    ];
+
+    pontos.forEach(function(ponto){
+        L.marker(ponto).addTo(map);
+    });
+
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,102 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+}
+
+/* LAYOUT */
+.container {
+    display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    background: #020617;
+    padding: 20px;
+    color: white;
+}
+
+.logo {
+    margin-bottom: 30px;
+}
+
+.sidebar nav a {
+    display: block;
+    color: #cbd5f5;
+    text-decoration: none;
+    margin: 10px 0;
+}
+
+.sidebar nav a:hover {
+    color: #22c55e;
+}
+
+/* MAIN */
+.main {
+    flex: 1;
+    padding: 20px;
+}
+
+/* TOPBAR */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    margin-bottom: 20px;
+}
+
+/* BOTÃO LOGOUT */
+.btn-logout {
+    background: red;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+/* CARDS */
+.cards {
+    display: flex;
+    gap: 20px;
+}
+
+.card-box {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    flex: 1;
+    text-align: center;
+}
+
+/* CARD LOGIN ANTIGO (mantém compatibilidade) */
+.card {
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 12px;
+    width: 350px;
+    margin: auto;
+    color: white;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    background: #22c55e;
+    border: none;
+    color: white;
+}
+#map {
+    height: 400px;
+    border-radius: 10px;
+    margin-top: 20px;
+}

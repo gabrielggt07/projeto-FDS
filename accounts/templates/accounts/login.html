@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card">
+
+    <h2 class="title">Enertech ⚡</h2>
+
+    <!-- MENSAGENS -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <input type="text" name="username" class="form-control" placeholder="Usuário" required>
+
+        <input type="password" name="password" class="form-control" placeholder="Senha" required>
+
+        <button type="submit" class="btn">Entrar</button>
+    </form>
+
+    <div class="link">
+        <small>
+            Não tem conta?
+            <a href="/register/">Criar conta</a>
+        </small>
+    </div>
+
+</div>
+
+{% endblock %}

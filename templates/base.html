@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Enertech</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- MENU LATERAL -->
+    <aside class="sidebar">
+        <h2 class="logo">Enertech ⚡</h2>
+
+        <nav>
+            <a href="/home/">🏠 Dashboard</a>
+            <a href="#">📊 Relatórios</a>
+            <a href="#">👥 Usuários</a>
+            <a href="#">⚙️ Configurações</a>
+        </nav>
+    </aside>
+
+    <!-- CONTEÚDO -->
+    <main class="main">
+
+        <!-- TOPO -->
+        <header class="topbar">
+            <span>Olá, {{ user.username }} 👋</span>
+
+            <form action="/logout/" method="post">
+                {% csrf_token %}
+                <button class="btn-logout">Sair</button>
+            </form>
+        </header>
+
+        <!-- CONTEÚDO DINÂMICO -->
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+</div>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</body>
+</html>
