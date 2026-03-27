@@ -23,4 +23,35 @@
 ## Link para screencast: 
 [Link para o screencast](https://youtu.be/kJDK5AWO-w8?si=KTadK9UZGcNILxKG)
 
+-------------------------------------------------------------------------------------------------------------------
+
+##Entrega 02 - (30/03):
+## 🎯 Objetivo da Sprint 2
+Implementar pelo menos 3 histórias selecionadas do backlog, garantindo:
+- Versionamento ativo com commits semanais
+- Uso do issue tracker no GitHub
+- Deploy em produção
+- Documentação completa no README
+- Screencast demonstrativo até **30/03**
+
+## 📌 Quadro da Sprint 2
+*(inserir print do Jira aqui)*
+
+Histórias selecionadas:
+- SCRUM-2: Filtro
+- SCRUM-3: Detalhamento do eletroposto
+- SCRUM-5: Reportar problema em eletroposto
+
+## 🔗 Repositório e Versionamento
+- [Link para o repositório GitHub](URl)
+- Commits semanais documentando progresso
+- Issue tracker atualizado com bugs e melhorias
+
+## 🚀 Deploy
+- [Link para o sistema em produção](URL_DO_DEPLOY)
+
+## 🎥 Screencast
+*(inserir link do vídeo demonstrativo aqui)*
+
+
 
