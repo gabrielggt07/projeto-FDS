@@ -43,6 +43,15 @@ Histórias selecionadas:
 - SCRUM-3: Detalhamento do eletroposto
 - SCRUM-5: Reportar problema em eletroposto
 
+## 📋 Backlog
+
+[Print do Backlog](https://github.com/user-attachments/assets/fd777505-eebe-474a-85c0-ab5b3f594c79)
+
+- SCRUM-4: Avaliação
+- SCRUM-6: Cadastro de usuário
+- SCRUM-7: Login inválido
+- SCRUM-8: Ranking de eletropostos
+ 
 ## 🔗 Repositório e Versionamento
 - [Link para o repositório GitHub](URl)
 - Commits semanais documentando progresso
