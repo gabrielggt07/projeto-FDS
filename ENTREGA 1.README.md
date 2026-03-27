@@ -36,7 +36,7 @@ Implementar pelo menos 3 histórias selecionadas do backlog, garantindo:
 
 ## 📌 Quadro da Sprint 2
 
-[Print do Quadro da Sprint 2]("https://github.com/user-attachments/assets/aaeebf23-d22a-4ad3-bf8b-698ff1e69af9")
+[Print do Quadro da Sprint 2](https://github.com/user-attachments/assets/aaeebf23-d22a-4ad3-bf8b-698ff1e69af9)
 
 Histórias selecionadas:
 - SCRUM-2: Filtro
