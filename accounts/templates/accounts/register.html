@@ -22,17 +22,9 @@
 
         <input type="email" name="email" class="form-control" placeholder="Email" required>
 
-        <!-- SENHA -->
-        <div class="position-relative">
-            <input type="password" name="password" id="password" class="form-control" placeholder="Senha" required>
-            <span class="eye" onclick="toggleSenha('password')">👁️</span>
-        </div>
+        <input type="password" name="password" class="form-control" placeholder="Senha" required>
 
-        <!-- CONFIRMAR SENHA -->
-        <div class="position-relative">
-            <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirmar senha" required>
-            <span class="eye" onclick="toggleSenha('confirm_password')">👁️</span>
-        </div>
+        <input type="password" name="confirm_password" class="form-control" placeholder="Confirmar senha" required>
 
         <button type="submit" class="btn">Cadastrar</button>
     </form>
@@ -40,17 +32,10 @@
     <div class="link">
         <small>
             Já tem conta?
-            <a href="/login/">Entrar</a>
+            <a href="{% url 'login' %}">Entrar</a>
         </small>
     </div>
 
 </div>
-
-<script>
-function toggleSenha(id) {
-    const input = document.getElementById(id);
-    input.type = input.type === "password" ? "text" : "password";
-}
-</script>
 
 {% endblock %}

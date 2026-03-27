@@ -1,51 +1,82 @@
 {% extends 'base.html' %}
-
-{% block content %}
-
-<h1 style="color:white;">Dashboard ⚡</h1>
-
-<div class="cards">
-
-    <div class="card-box">
-        <h3>Usuários</h3>
-        <p>120</p>
-    </div>
-
-    <div class="card-box">
-        <h3>Consumo</h3>
-        <p>450 kW</p>
-    </div>
-
-    <div class="card-box">
-        <h3>Receita</h3>
-        <p>R$ 12.000</p>
-    </div>
-
+{% load static %} {% block content %}
+<div class="topbar">
+    <h1>Dashboard Enertech ⚡</h1>
+    
+    {% if user.is_staff or user.is_superuser %}
+        <button class="btn" onclick="abrirFormulario()" style="width: auto; padding: 8px 20px;">
+            ➕ Adicionar Ponto
+        </button>
+    {% endif %}
 </div>
 
-<!-- MAPA -->
-<div id="map"></div>
+<div class="cards" style="grid-template-columns: 1fr;">
+    <div class="card-box" style="display: flex; align-items: center; justify-content: space-between; padding: 15px 24px;">
+        <div>
+            <h3 style="color: #22c55e; font-size: 16px; margin: 0;">Filtro de Preço Máximo 💰</h3>
+            <p style="color: #94a3b8; font-size: 12px; margin: 0;">Deslize para filtrar postos pelo valor de recarga</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <span id="valorFiltroLabel" style="font-size: 20px; font-weight: 800; color: #22c55e; min-width: 110px;">R$ 200,00</span>
+            <input type="range" id="inputPreco" min="0" max="200" step="5" value="200" oninput="filtrarPorPreco()" style="accent-color: #22c55e; cursor: pointer; width: 250px;">
+        </div>
+    </div>
+</div>
+
+<div class="main-content-wrapper">
+    <div class="map-container"><div id="map"></div></div>
+    <div class="card-box sidebar-list">
+        <h3 style="margin-bottom: 15px; font-size: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">📍 Meus Pontos</h3>
+        <input type="text" id="inputBusca" onkeyup="filtrarLista()" placeholder="🔍 Buscar por Nome..." class="form-control">
+        <div id="itens-lista" class="list-scroll"></div>
+    </div>
+</div>
+<div id="formPonto" class="modal-overlay" style="display:none;">
+    <div class="card" style="width: 400px; margin: auto; position: relative;">
+        <h2 style="margin-bottom: 20px; color: #22c55e;">Novo Eletroposto</h2>
+        
+        <label style="color: #94a3b8; font-size: 12px; display: block; margin-bottom: 5px;">Nome do Posto</label>
+        <input type="text" id="nome_posto" class="form-control" placeholder="Ex: Posto Graças Center">
+
+        <label style="color: #94a3b8; font-size: 12px; display: block; margin-bottom: 5px;">Coordenadas</label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <input type="number" step="any" id="lat" class="form-control" placeholder="Latitude">
+            <input type="number" step="any" id="lng" class="form-control" placeholder="Longitude">
+        </div>
+
+        <label style="color: #94a3b8; font-size: 12px; display: block; margin-bottom: 5px;">Dados Técnicos</label>
+        <input type="number" id="consumo" class="form-control" placeholder="Consumo (kW)">
+        <input type="number" id="valor" class="form-control" placeholder="Valor (R$)">
+
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <button class="btn" onclick="salvarPonto()">Salvar</button>
+            <button class="btn" onclick="fecharFormulario()" style="background: #334155;">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'accounts/js/dashboard.js' %}"></script>
+<link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    var map = L.map('map').setView([-8.0476, -34.8770], 13);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap'
-    }).addTo(map);
-
-    var pontos = [
-        [-8.0476, -34.8770],
-        [-8.05, -34.90],
-        [-8.04, -34.88]
-    ];
-
-    pontos.forEach(function(ponto){
-        L.marker(ponto).addTo(map);
+    // Único script que resta no HTML: Passar os dados do Django para o JS externo
+    document.addEventListener("DOMContentLoaded", function () {
+        const pontosDoBanco = [
+            {% for p in pontos %}
+            {
+                id: {{ p.id }},
+                lat: {{ p.latitude }},
+                lng: {{ p.longitude }},
+                consumo: {{ p.consumo|default:0 }},
+                nome: "{{ p.nome|default:'Posto sem nome' }}",
+                valor: {{ p.valor|default:0 }}
+            },
+            {% endfor %}
+        ];
+        
+// No script dentro do home.html
+        const eAdmin = {{ user.is_staff|yesno:"true,false" }};
+            initDashboard(pontosDoBanco, eAdmin);
     });
-
-});
 </script>
-
 {% endblock %}

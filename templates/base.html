@@ -3,48 +3,67 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Enertech</title>
+
+    <title>
+        {% block title %}Enertech{% endblock %}
+    </title>
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- CSS extra por página -->
+    {% block extra_css %}{% endblock %}
+
+    <!-- Leaflet (só carrega se precisar) -->
+    {% block leaflet_css %}
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    {% endblock %}
 </head>
 
-<body>
-
+<body class="{% if user.is_authenticated %}logged{% endif %}">
 <div class="container">
 
-    <!-- MENU LATERAL -->
-    <aside class="sidebar">
-        <h2 class="logo">Enertech ⚡</h2>
+    <!-- SIDEBAR -->
+    {% if user.is_authenticated %}
+<aside class="sidebar">
+    <h2 class="logo">Enertech ⚡</h2>
 
-        <nav>
-            <a href="/home/">🏠 Dashboard</a>
-            <a href="#">📊 Relatórios</a>
-            <a href="#">👥 Usuários</a>
-            <a href="#">⚙️ Configurações</a>
-        </nav>
-    </aside>
-
-    <!-- CONTEÚDO -->
+    <nav>
+        <a href="{% url 'home' %}">🏠 Dashboard</a>
+        <a href="#">📊 Relatórios</a>
+        <a href="#">👥 Usuários</a>
+        <a href="#">⚙️ Configurações</a>
+    </nav>
+</aside>
+{% endif %}
+    <!-- MAIN -->
     <main class="main">
 
-        <!-- TOPO -->
+        <!-- TOPBAR -->
         <header class="topbar">
-            <span>Olá, {{ user.username }} 👋</span>
+            <h1>Olá, {{ user.username }} 👋</h1>
 
-            <form action="/logout/" method="post">
-                {% csrf_token %}
-                <button class="btn-logout">Sair</button>
-            </form>
+            {% if user.is_authenticated %}
+<form action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <button class="btn-logout">Sair</button>
+</form>
+{% endif %}
         </header>
 
         <!-- CONTEÚDO DINÂMICO -->
-        {% block content %}
-        {% endblock %}
+        <section class="content">
+            {% block content %}
+            {% endblock %}
+        </section>
 
     </main>
 
 </div>
+
+<!-- SCRIPTS -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+{% block scripts %}{% endblock %}
+
 </body>
 </html>
