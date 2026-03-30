@@ -1,57 +1,187 @@
 {% extends 'base.html' %}
-{% load static %} {% block content %}
+{% load static %}
+{% block content %}
+
 <div class="topbar">
-    <h1>Dashboard Enertech ⚡</h1>
-    
+    <h1>Dashboard <span>Enertech</span> <span class="topbar-badge">Ao vivo</span></h1>
     {% if user.is_staff or user.is_superuser %}
-        <button class="btn" onclick="abrirFormulario()" style="width: auto; padding: 8px 20px;">
+        <button class="btn" onclick="abrirFormulario()" style="width:auto;padding:8px 20px;">
             ➕ Adicionar Ponto
         </button>
     {% endif %}
 </div>
 
-<div class="cards" style="grid-template-columns: 1fr;">
-    <div class="card-box" style="display: flex; align-items: center; justify-content: space-between; padding: 15px 24px;">
-        <div>
-            <h3 style="color: #22c55e; font-size: 16px; margin: 0;">Filtro de Preço Máximo 💰</h3>
-            <p style="color: #94a3b8; font-size: 12px; margin: 0;">Deslize para filtrar postos pelo valor de recarga</p>
+<!-- ── FILTROS ── -->
+<div class="filtros-painel">
+    <div class="filtros-header">
+        <span class="section-title">🔍 Filtros</span>
+        <button class="btn-ghost btn-small" onclick="resetarFiltros()">Limpar filtros</button>
+    </div>
+    <div class="filtros-grid">
+        <div class="filtro-grupo">
+            <label class="form-label">Buscar por nome</label>
+            <input type="text" id="inputBusca" onkeyup="aplicarFiltros()" placeholder="Ex: Posto Boa Viagem..." class="form-control">
         </div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-            <span id="valorFiltroLabel" style="font-size: 20px; font-weight: 800; color: #22c55e; min-width: 110px;">R$ 200,00</span>
-            <input type="range" id="inputPreco" min="0" max="200" step="5" value="200" oninput="filtrarPorPreco()" style="accent-color: #22c55e; cursor: pointer; width: 250px;">
+        <div class="filtro-grupo">
+            <label class="form-label">
+                Preço máx. por kWh
+                <span id="labelKwh" class="filtro-valor-label">R$ 5,00</span>
+            </label>
+            <input type="range" id="inputKwh" min="0" max="5" step="0.05" value="5" oninput="aplicarFiltros()" class="filtro-range">
+        </div>
+        <div class="filtro-grupo">
+            <label class="form-label">
+                Potência mínima
+                <span id="labelKw" class="filtro-valor-label">0 kW</span>
+            </label>
+            <input type="range" id="inputKw" min="0" max="350" step="10" value="0" oninput="aplicarFiltros()" class="filtro-range">
+        </div>
+        <div class="filtro-grupo filtro-grupo--full">
+            <label class="form-label">Tipo de conector</label>
+            <div class="chips-wrap" id="chipsConector">
+                <button class="chip chip--active" data-tipo="todos"   onclick="toggleChip(this)">Todos</button>
+                <button class="chip" data-tipo="tipo1"   onclick="toggleChip(this)">Tipo 1 (J1772)</button>
+                <button class="chip" data-tipo="tipo2"   onclick="toggleChip(this)">Tipo 2 (Mennekes)</button>
+                <button class="chip" data-tipo="ccs1"    onclick="toggleChip(this)">CCS Combo 1</button>
+                <button class="chip" data-tipo="ccs2"    onclick="toggleChip(this)">CCS Combo 2</button>
+                <button class="chip" data-tipo="chademo" onclick="toggleChip(this)">CHAdeMO</button>
+                <button class="chip" data-tipo="gbdc"    onclick="toggleChip(this)">GB/T DC</button>
+                <button class="chip" data-tipo="tesla"   onclick="toggleChip(this)">Tesla (NACS)</button>
+                <button class="chip" data-tipo="schuko"  onclick="toggleChip(this)">Schuko</button>
+            </div>
         </div>
     </div>
 </div>
 
+<!-- ── MAPA + LISTA ── -->
 <div class="main-content-wrapper">
     <div class="map-container"><div id="map"></div></div>
-    <div class="card-box sidebar-list">
-        <h3 style="margin-bottom: 15px; font-size: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">📍 Meus Pontos</h3>
-        <input type="text" id="inputBusca" onkeyup="filtrarLista()" placeholder="🔍 Buscar por Nome..." class="form-control">
+    <div class="sidebar-list">
+        <div class="sidebar-list-header">
+            Eletropostos
+            <span class="list-count" id="listCount">0</span>
+        </div>
         <div id="itens-lista" class="list-scroll"></div>
     </div>
 </div>
+
+<!-- ══════════════════════════════════════
+     MODAL: NOVO ELETROPOSTO
+     ══════════════════════════════════════ -->
 <div id="formPonto" class="modal-overlay" style="display:none;">
-    <div class="card" style="width: 400px; margin: auto; position: relative;">
-        <h2 style="margin-bottom: 20px; color: #22c55e;">Novo Eletroposto</h2>
-        
-        <label style="color: #94a3b8; font-size: 12px; display: block; margin-bottom: 5px;">Nome do Posto</label>
-        <input type="text" id="nome_posto" class="form-control" placeholder="Ex: Posto Graças Center">
+    <div class="card" style="width:440px;margin:auto;position:relative;">
+        <div class="card-title">⚡ Novo Eletroposto</div>
+        <div class="card-subtitle">Preencha os dados do ponto de recarga</div>
 
-        <label style="color: #94a3b8; font-size: 12px; display: block; margin-bottom: 5px;">Coordenadas</label>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <input type="number" step="any" id="lat" class="form-control" placeholder="Latitude">
-            <input type="number" step="any" id="lng" class="form-control" placeholder="Longitude">
+        <div class="form-group">
+            <label class="form-label">Nome do Posto</label>
+            <input type="text" id="nome_posto" class="form-control" placeholder="Ex: Posto Graças Center">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Coordenadas</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <input type="number" step="any" id="lat" class="form-control" placeholder="Latitude">
+                <input type="number" step="any" id="lng" class="form-control" placeholder="Longitude">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Potência (kW)</label>
+            <input type="number" id="consumo" class="form-control" placeholder="Ex: 50">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Precificação</label>
+            <div class="preco-grid">
+                <div class="preco-item">
+                    <span class="preco-label">Taxa de início</span>
+                    <div class="preco-input-wrap">
+                        <span class="preco-prefix">R$</span>
+                        <input type="number" step="0.01" id="preco_start" class="form-control preco-input" placeholder="2,00">
+                    </div>
+                </div>
+                <div class="preco-item">
+                    <span class="preco-label">Por kWh</span>
+                    <div class="preco-input-wrap">
+                        <span class="preco-prefix">R$</span>
+                        <input type="number" step="0.01" id="preco_kwh" class="form-control preco-input" placeholder="1,75">
+                    </div>
+                </div>
+                <div class="preco-item">
+                    <span class="preco-label">Ociosidade /min</span>
+                    <div class="preco-input-wrap">
+                        <span class="preco-prefix">R$</span>
+                        <input type="number" step="0.01" id="preco_ociosidade" class="form-control preco-input" placeholder="0,50">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Tipos de conector disponíveis</label>
+            <div class="chips-wrap" id="chipsFormConector">
+                <button type="button" class="chip" data-tipo="tipo1"   onclick="toggleChipForm(this)">Tipo 1 (J1772)</button>
+                <button type="button" class="chip" data-tipo="tipo2"   onclick="toggleChipForm(this)">Tipo 2 (Mennekes)</button>
+                <button type="button" class="chip" data-tipo="ccs1"    onclick="toggleChipForm(this)">CCS Combo 1</button>
+                <button type="button" class="chip" data-tipo="ccs2"    onclick="toggleChipForm(this)">CCS Combo 2</button>
+                <button type="button" class="chip" data-tipo="chademo" onclick="toggleChipForm(this)">CHAdeMO</button>
+                <button type="button" class="chip" data-tipo="gbdc"    onclick="toggleChipForm(this)">GB/T DC</button>
+                <button type="button" class="chip" data-tipo="tesla"   onclick="toggleChipForm(this)">Tesla (NACS)</button>
+                <button type="button" class="chip" data-tipo="schuko"  onclick="toggleChipForm(this)">Schuko</button>
+            </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:20px;">
+            <button class="btn" onclick="salvarPonto()">Salvar Ponto</button>
+            <button class="btn" onclick="fecharFormulario()" style="background:rgba(51,65,85,0.8);color:#94a3b8;box-shadow:none;">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MODAL: AVALIAÇÕES
+     ══════════════════════════════════════ -->
+<div id="modalAvaliacao" class="modal-overlay" style="display:none;">
+    <div class="card aval-card">
+
+        <!-- Cabeçalho -->
+        <div class="aval-header">
+            <div>
+                <div class="card-title" id="avalNomePosto">—</div>
+                <div class="aval-media-wrap">
+                    <span class="aval-media-stars" id="avalMediaStars"></span>
+                    <span class="aval-media-num"   id="avalMediaNum">Sem avaliações</span>
+                </div>
+            </div>
+            <button class="aval-close" onclick="fecharAvaliacao()">✕</button>
         </div>
 
-        <label style="color: #94a3b8; font-size: 12px; display: block; margin-bottom: 5px;">Dados Técnicos</label>
-        <input type="number" id="consumo" class="form-control" placeholder="Consumo (kW)">
-        <input type="number" id="valor" class="form-control" placeholder="Valor (R$)">
+        <!-- Formulário: minha avaliação -->
+        <div class="aval-form-section">
+            <div class="form-label" style="margin-bottom:10px;">Sua avaliação</div>
 
-        <div style="display: flex; gap: 10px; margin-top: 15px;">
-            <button class="btn" onclick="salvarPonto()">Salvar</button>
-            <button class="btn" onclick="fecharFormulario()" style="background: #334155;">Cancelar</button>
+            <!-- Estrelas interativas -->
+            <div class="star-picker" id="starPicker">
+                <span class="star" data-val="1">★</span>
+                <span class="star" data-val="2">★</span>
+                <span class="star" data-val="3">★</span>
+                <span class="star" data-val="4">★</span>
+                <span class="star" data-val="5">★</span>
+            </div>
+
+            <textarea id="avalComentario" class="form-control" rows="3"
+                      placeholder="Deixe um comentário (opcional)..."
+                      style="margin-top:12px;resize:vertical;"></textarea>
+
+            <button class="btn" style="margin-top:12px;" onclick="enviarAvaliacao()">
+                Enviar avaliação
+            </button>
         </div>
+
+        <!-- Lista de avaliações -->
+        <div class="aval-lista-section">
+            <div class="form-label" style="margin-bottom:12px;">O que outros usuários acharam</div>
+            <div id="avalLista" class="aval-lista-scroll">
+                <div class="aval-empty">Carregando...</div>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -59,24 +189,27 @@
 <link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
 
 <script>
-    // Único script que resta no HTML: Passar os dados do Django para o JS externo
     document.addEventListener("DOMContentLoaded", function () {
         const pontosDoBanco = [
             {% for p in pontos %}
             {
-                id: {{ p.id }},
-                lat: {{ p.latitude }},
-                lng: {{ p.longitude }},
-                consumo: {{ p.consumo|default:0 }},
-                nome: "{{ p.nome|default:'Posto sem nome' }}",
-                valor: {{ p.valor|default:0 }}
+                id:               {{ p.id }},
+                lat:              {{ p.latitude }},
+                lng:              {{ p.longitude }},
+                consumo:          {{ p.consumo|default:0 }},
+                nome:             "{{ p.nome|default:'Posto sem nome'|escapejs }}",
+                preco_start:      {{ p.preco_start|default:0 }},
+                preco_kwh:        {{ p.preco_kwh|default:0 }},
+                preco_ociosidade: {{ p.preco_ociosidade|default:0 }},
+                tipos_carregador: "{{ p.tipos_carregador|default:'' }}",
+                media:            {{ p.media_avaliacoes|default:'null' }},
+                total_aval:       {{ p.total_avaliacoes }},
             },
             {% endfor %}
         ];
-        
-// No script dentro do home.html
         const eAdmin = {{ user.is_staff|yesno:"true,false" }};
-            initDashboard(pontosDoBanco, eAdmin);
+        initDashboard(pontosDoBanco, eAdmin);
     });
 </script>
+
 {% endblock %}

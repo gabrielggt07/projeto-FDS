@@ -1,4 +1,5 @@
 from django.urls import path
+from accounts import views
 from .views import CustomLoginView, RegisterView, home, salvar_ponto, remover_ponto # Adicione remover_ponto aqui
 from django.contrib.auth.views import LogoutView
 
@@ -12,4 +13,6 @@ urlpatterns = [
     
     # NOVA ROTA: O <int:id> captura o ID que o JavaScript envia na URL
     path('remover-ponto/<int:id>/', remover_ponto, name='remover_ponto'),
+    path('avaliar-ponto/<int:id>/', views.avaliar_ponto,  name='avaliar_ponto'),
+    path('avaliacoes/<int:id>/',    views.get_avaliacoes, name='get_avaliacoes'),
 ]
