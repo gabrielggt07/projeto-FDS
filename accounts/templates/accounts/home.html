@@ -36,6 +36,14 @@
             </label>
             <input type="range" id="inputKw" min="0" max="350" step="10" value="0" oninput="aplicarFiltros()" class="filtro-range">
         </div>
+        <div class="filtro-grupo">
+            <label class="form-label">Disponibilidade</label>
+            <div class="chips-wrap">
+                <button class="chip chip--active" data-disp="todos"   onclick="toggleDisp(this)">Todos</button>
+                <button class="chip"              data-disp="livres"  onclick="toggleDisp(this)">🟢 Com vagas</button>
+                <button class="chip"              data-disp="ocupado" onclick="toggleDisp(this)">🔴 Ocupados</button>
+            </div>
+        </div>
         <div class="filtro-grupo filtro-grupo--full">
             <label class="form-label">Tipo de conector</label>
             <div class="chips-wrap" id="chipsConector">
@@ -69,7 +77,8 @@
      MODAL: NOVO ELETROPOSTO
      ══════════════════════════════════════ -->
 <div id="formPonto" class="modal-overlay" style="display:none;">
-    <div class="card" style="width:440px;margin:auto;position:relative;">
+    <div class="card modal-card-scroll">
+
         <div class="card-title">⚡ Novo Eletroposto</div>
         <div class="card-subtitle">Preencha os dados do ponto de recarga</div>
 
@@ -85,7 +94,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-label">Potência (kW)</label>
+            <label class="form-label">Potência geral (kW)</label>
             <input type="number" id="consumo" class="form-control" placeholder="Ex: 50">
         </div>
         <div class="form-group">
@@ -114,19 +123,16 @@
                 </div>
             </div>
         </div>
+
+        <!-- CONECTORES INDIVIDUAIS -->
         <div class="form-group">
-            <label class="form-label">Tipos de conector disponíveis</label>
-            <div class="chips-wrap" id="chipsFormConector">
-                <button type="button" class="chip" data-tipo="tipo1"   onclick="toggleChipForm(this)">Tipo 1 (J1772)</button>
-                <button type="button" class="chip" data-tipo="tipo2"   onclick="toggleChipForm(this)">Tipo 2 (Mennekes)</button>
-                <button type="button" class="chip" data-tipo="ccs1"    onclick="toggleChipForm(this)">CCS Combo 1</button>
-                <button type="button" class="chip" data-tipo="ccs2"    onclick="toggleChipForm(this)">CCS Combo 2</button>
-                <button type="button" class="chip" data-tipo="chademo" onclick="toggleChipForm(this)">CHAdeMO</button>
-                <button type="button" class="chip" data-tipo="gbdc"    onclick="toggleChipForm(this)">GB/T DC</button>
-                <button type="button" class="chip" data-tipo="tesla"   onclick="toggleChipForm(this)">Tesla (NACS)</button>
-                <button type="button" class="chip" data-tipo="schuko"  onclick="toggleChipForm(this)">Schuko</button>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                <label class="form-label" style="margin:0;">Conectores / Vagas (Detalhes)</label>
+                <button type="button" class="btn-ghost btn-small" onclick="adicionarConectorForm()">+ Adicionar</button>
             </div>
+            <div id="listaConectoresForm"></div>
         </div>
+
         <div style="display:flex;gap:10px;margin-top:20px;">
             <button class="btn" onclick="salvarPonto()">Salvar Ponto</button>
             <button class="btn" onclick="fecharFormulario()" style="background:rgba(51,65,85,0.8);color:#94a3b8;box-shadow:none;">Cancelar</button>
@@ -139,8 +145,6 @@
      ══════════════════════════════════════ -->
 <div id="modalAvaliacao" class="modal-overlay" style="display:none;">
     <div class="card aval-card">
-
-        <!-- Cabeçalho -->
         <div class="aval-header">
             <div>
                 <div class="card-title" id="avalNomePosto">—</div>
@@ -151,12 +155,8 @@
             </div>
             <button class="aval-close" onclick="fecharAvaliacao()">✕</button>
         </div>
-
-        <!-- Formulário: minha avaliação -->
         <div class="aval-form-section">
             <div class="form-label" style="margin-bottom:10px;">Sua avaliação</div>
-
-            <!-- Estrelas interativas -->
             <div class="star-picker" id="starPicker">
                 <span class="star" data-val="1">★</span>
                 <span class="star" data-val="2">★</span>
@@ -164,24 +164,34 @@
                 <span class="star" data-val="4">★</span>
                 <span class="star" data-val="5">★</span>
             </div>
-
             <textarea id="avalComentario" class="form-control" rows="3"
                       placeholder="Deixe um comentário (opcional)..."
                       style="margin-top:12px;resize:vertical;"></textarea>
-
-            <button class="btn" style="margin-top:12px;" onclick="enviarAvaliacao()">
-                Enviar avaliação
-            </button>
+            <button class="btn" style="margin-top:12px;" onclick="enviarAvaliacao()">Enviar avaliação</button>
         </div>
-
-        <!-- Lista de avaliações -->
         <div class="aval-lista-section">
             <div class="form-label" style="margin-bottom:12px;">O que outros usuários acharam</div>
             <div id="avalLista" class="aval-lista-scroll">
                 <div class="aval-empty">Carregando...</div>
             </div>
         </div>
+    </div>
+</div>
 
+<!-- ══════════════════════════════════════
+     MODAL: EDITAR DISPONIBILIDADE
+     ══════════════════════════════════════ -->
+<div id="modalEditarDisp" class="modal-overlay" style="display:none;">
+    <div class="card" style="max-width:500px;">
+        <div class="card-title" id="modalDispTitle">Editar Disponibilidade</div>
+        <div class="card-subtitle" id="modalDispSubtitle">Marque quais conectores estão disponíveis</div>
+
+        <div id="conectoresEditList" style="margin:20px 0;"></div>
+
+        <div style="display:flex;gap:10px;margin-top:20px;">
+            <button class="btn" onclick="salvarDisponibilidade()">Salvar Alterações</button>
+            <button class="btn" onclick="fecharEditarDisp()" style="background:rgba(51,65,85,0.8);color:#94a3b8;box-shadow:none;">Cancelar</button>
+        </div>
     </div>
 </div>
 
@@ -204,6 +214,18 @@
                 tipos_carregador: "{{ p.tipos_carregador|default:'' }}",
                 media:            {{ p.media_avaliacoes|default:'null' }},
                 total_aval:       {{ p.total_avaliacoes }},
+                vagas_livres:     {{ p.vagas_livres }},
+                total_vagas:      {{ p.total_vagas }},
+                conectores: [
+                    {% for c in p.conectores.all %}
+                    {
+                        id:       {{ c.id }},
+                        tipo:     "{{ c.tipo }}",
+                        potencia: {{ c.potencia }},
+                        status:   "{{ c.status }}",
+                    },
+                    {% endfor %}
+                ],
             },
             {% endfor %}
         ];

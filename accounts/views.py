@@ -7,10 +7,13 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.http import JsonResponse
-from .models import Ponto, Avaliacao
+from .models import Ponto, Conector, Avaliacao
 import json
 
-# 🔐 LOGIN
+
+# ─────────────────────────────────────────
+# LOGIN
+# ─────────────────────────────────────────
 class CustomLoginView(LoginView):
     template_name = 'accounts/login.html'
     redirect_authenticated_user = True
@@ -23,14 +26,18 @@ class CustomLoginView(LoginView):
         return super().form_invalid(form)
 
 
-# 🏠 HOME
+# ─────────────────────────────────────────
+# HOME
+# ─────────────────────────────────────────
 @login_required
 def home(request):
-    pontos = Ponto.objects.prefetch_related('avaliacoes').all()
+    pontos = Ponto.objects.prefetch_related('avaliacoes', 'conectores').all()
     return render(request, 'accounts/home.html', {'pontos': pontos})
 
 
-# 🧾 REGISTER
+# ─────────────────────────────────────────
+# REGISTER
+# ─────────────────────────────────────────
 class RegisterView(View):
     template_name = 'accounts/register.html'
 
@@ -61,12 +68,15 @@ class RegisterView(View):
         return redirect('login')
 
 
-# 📍 SALVAR PONTO (AJAX)
+# ─────────────────────────────────────────
+# SALVAR PONTO (AJAX)
+# ─────────────────────────────────────────
 @staff_member_required
 def salvar_ponto(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
+
             novo_ponto = Ponto.objects.create(
                 nome             = data.get('nome', 'Posto Sem Nome'),
                 latitude         = data.get('lat'),
@@ -77,13 +87,30 @@ def salvar_ponto(request):
                 preco_ociosidade = data.get('preco_ociosidade') or 0,
                 tipos_carregador = ','.join(data.get('tipos_carregador', [])),
             )
-            return JsonResponse({'id': novo_ponto.id, 'status': 'sucesso', 'nome': novo_ponto.nome})
+
+            # Cria conectores individuais enviados pelo formulário
+            for c in data.get('conectores', []):
+                Conector.objects.create(
+                    ponto    = novo_ponto,
+                    tipo     = c.get('tipo'),
+                    potencia = c.get('potencia') or 0,
+                    status   = 'livre',
+                )
+
+            return JsonResponse({
+                'id':     novo_ponto.id,
+                'status': 'sucesso',
+                'nome':   novo_ponto.nome,
+            })
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
+
     return JsonResponse({'error': 'Método não permitido'}, status=405)
 
 
-# 🗑️ REMOVER PONTO (AJAX)
+# ─────────────────────────────────────────
+# REMOVER PONTO (AJAX)
+# ─────────────────────────────────────────
 @staff_member_required
 def remover_ponto(request, id):
     if request.method == 'POST':
@@ -93,10 +120,41 @@ def remover_ponto(request, id):
             return JsonResponse({'status': 'removido'})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
+
     return JsonResponse({'error': 'Método não permitido'}, status=405)
 
 
-# ⭐ AVALIAR PONTO (AJAX) — cria ou atualiza a avaliação do usuário
+# ─────────────────────────────────────────
+# STATUS EM TEMPO REAL (polling 15s)
+# ─────────────────────────────────────────
+@login_required
+def status_pontos(request):
+    """Retorna vagas livres/total e conectores de todos os pontos.
+    Chamado pelo frontend a cada 15 segundos."""
+    pontos = Ponto.objects.prefetch_related('conectores').all()
+    data = []
+    for p in pontos:
+        conectores = p.conectores.all()
+        data.append({
+            'id':           p.id,
+            'vagas_livres': p.vagas_livres(),
+            'total_vagas':  p.total_vagas(),
+            'conectores': [
+                {
+                    'id':       c.id,
+                    'tipo':     c.tipo,
+                    'potencia': c.potencia,
+                    'status':   c.status,
+                }
+                for c in conectores
+            ],
+        })
+    return JsonResponse({'pontos': data})
+
+
+# ─────────────────────────────────────────
+# AVALIAR PONTO (AJAX)
+# ─────────────────────────────────────────
 @login_required
 def avaliar_ponto(request, id):
     if request.method == 'POST':
@@ -111,34 +169,36 @@ def avaliar_ponto(request, id):
                 return JsonResponse({'error': 'Estrelas devem ser entre 1 e 5'}, status=400)
 
             avaliacao, criada = Avaliacao.objects.update_or_create(
-                ponto=ponto,
-                usuario=request.user,
+                ponto=ponto, usuario=request.user,
                 defaults={'estrelas': estrelas, 'comentario': comentario},
             )
 
             return JsonResponse({
-                'status':  'criada' if criada else 'atualizada',
-                'media':   ponto.media_avaliacoes(),
-                'total':   ponto.total_avaliacoes(),
+                'status': 'criada' if criada else 'atualizada',
+                'media':  ponto.media_avaliacoes(),
+                'total':  ponto.total_avaliacoes(),
             })
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
+
     return JsonResponse({'error': 'Método não permitido'}, status=405)
 
 
-# 📋 LISTAR AVALIAÇÕES DE UM PONTO (AJAX)
+# ─────────────────────────────────────────
+# LISTAR AVALIAÇÕES (AJAX)
+# ─────────────────────────────────────────
 @login_required
 def get_avaliacoes(request, id):
-    ponto    = get_object_or_404(Ponto, id=id)
-    avals    = ponto.avaliacoes.select_related('usuario').all()
-    minha    = avals.filter(usuario=request.user).first()
+    ponto = get_object_or_404(Ponto, id=id)
+    avals = ponto.avaliacoes.select_related('usuario').all()
+    minha = avals.filter(usuario=request.user).first()
 
     return JsonResponse({
         'media': ponto.media_avaliacoes(),
         'total': ponto.total_avaliacoes(),
         'minha_avaliacao': {
-            'estrelas':    minha.estrelas,
-            'comentario':  minha.comentario,
+            'estrelas':   minha.estrelas,
+            'comentario': minha.comentario,
         } if minha else None,
         'avaliacoes': [
             {
@@ -150,3 +210,33 @@ def get_avaliacoes(request, id):
             for a in avals
         ],
     })
+
+
+# ─────────────────────────────────────────
+# ATUALIZAR DISPONIBILIDADE DE CONECTORES
+# ─────────────────────────────────────────
+@staff_member_required
+def atualizar_disponibilidade(request, id):
+    """Atualiza o status (livre/ocupado) dos conectores de um ponto."""
+    if request.method == 'POST':
+        try:
+            ponto = get_object_or_404(Ponto, id=id)
+            data  = json.loads(request.body)
+            
+            conectores_data = data.get('conectores', [])
+            
+            # Atualiza status de cada conector
+            for idx, c_data in enumerate(conectores_data):
+                conector = ponto.conectores.all()[idx]
+                conector.status = c_data.get('status', 'livre')
+                conector.save()
+            
+            return JsonResponse({
+                'success': True,
+                'vagas_livres': ponto.vagas_livres(),
+                'total_vagas': ponto.total_vagas(),
+            })
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    
+    return JsonResponse({'error': 'Método não permitido'}, status=405)
