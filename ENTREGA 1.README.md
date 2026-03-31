@@ -63,6 +63,50 @@ Histórias selecionadas:
 ## 🎥 Screencast
 [Link para o screencast](https://youtu.be/jMHKG2hMUsI?si=onBhtmm84sfaa9-f)
 
+## Bug tracker
+
+Status do Sistema: Estável (Fase de Autenticação Concluída)
+
+1. Erro de Rota de Saída (NoReverseMatch)
+Descrição: O sistema disparava um erro crítico ao tentar renderizar a página de login, alegando que a URL 'logout' não existia.
+
+Causa Raiz: O template (provavelmente o base.html) continha uma tag {% url 'logout' %}, mas a rota correspondente não havia sido declarada no arquivo accounts/urls.py.
+
+Resolução: Adição da rota path('logout/', auth_views.LogoutView.as_view(), name='logout') e configuração do LOGOUT_REDIRECT_URL no settings.py.
+
+Severidade: Alta (Bloqueava o carregamento da página).
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2. Falha de Submissão Silenciosa (Formulário Inerte)
+Descrição: O usuário preenchia os dados de login, clicava em "Entrar", mas a página apenas recarregava sem processar a autenticação (nenhum POST registrado no log do servidor).
+
+Causa Raiz: Conflito de estrutura no HTML. Tags de formulário no base.html (como o botão de Logout) estavam interferindo ou "sobrepondo" o formulário de Login dentro do bloco de conteúdo, impedindo o disparo do evento de submit.
+
+Resolução: Reestruturação do base.html utilizando condicionais {% if user.is_authenticated %} para isolar componentes da Dashboard (Sidebar/Topbar) do conteúdo de autenticação.
+
+Severidade: Crítica (Impedia o acesso ao sistema).
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+3. Duplicidade de Blocos de Template (TemplateSyntaxError)
+Descrição: Erro de sintaxe: block tag with name 'content' appears more than once.
+
+Causa Raiz: Tentativa de declarar o mesmo {% block content %} duas vezes dentro do arquivo base.html (uma para o layout logado e outra para o layout deslogado). O motor de templates do Django não permite nomes de blocos duplicados no mesmo arquivo pai.
+
+Resolução: Unificação do bloco content. A lógica de "Logado vs Deslogado" passou a ser controlada por if/else ao redor dos elementos de UI (Sidebar), mantendo apenas uma declaração de bloco de conteúdo.
+
+Severidade: Alta (Impedia o servidor de renderizar qualquer página).
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+4. Mudança de Protocolo de Logout (Django 5.0+)
+Descrição: Erros potenciais ao tentar deslogar via link simples (GET).
+
+Causa Raiz: Nas versões mais recentes do Django, o LogoutView exige o método POST por questões de segurança contra ataques CSRF.
+
+Resolução: Substituição de links <a> por pequenos formulários <form method="post"> com botões de submit para a ação de logout na Topbar.
+
+Severidade: Média (Segurança e Conformidade).
+
+
+
+ 
+
 
 
 
