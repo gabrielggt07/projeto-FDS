@@ -61,7 +61,8 @@ Histórias selecionadas:
 - [Link para o sistema em produção](URL_DO_DEPLOY)
 
 ## 🎥 Screencast
-*(inserir link do vídeo demonstrativo aqui)*
+[Link para o screencast](https://youtu.be/jMHKG2hMUsI?si=onBhtmm84sfaa9-f)
+
 
 
 
