@@ -122,11 +122,6 @@ http://127.0.0.1:8000/
 
 ---
 
-## 👨‍💻 Autor
-
-Desenvolvido por **Luiz Henrique Carvalho Vieira**
-
----
 
 ## 📄 Licença
 
