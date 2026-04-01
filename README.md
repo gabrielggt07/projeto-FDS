@@ -167,7 +167,8 @@ Implementar pelo menos 3 histórias selecionadas do backlog, garantindo:
 
 ## 📌 Quadro da Sprint 2
 
-[Print do Quadro da Sprint 2](<img width="1427" height="225" alt="print sprint" src="https://github.com/user-attachments/assets/46a7415f-37b6-412e-9ad6-2d1ed304e668" />)
+[Print do Quadro da Sprint 2](<img width="1586" height="248" alt="print do quadro sprint2" src="https://github.com/user-attachments/assets/0d041a85-3820-4931-ad8f-ec49785dda56" />
+)
 
 Histórias selecionadas:
 - SCRUM-2: Filtro
