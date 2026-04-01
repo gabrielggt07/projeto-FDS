@@ -235,6 +235,10 @@ Resolução: Substituição de links <a> por pequenos formulários <form method=
 Severidade: Média (Segurança e Conformidade).
 
 
+##Programaçao em par experimentada: 
+- Durante o desenvolvimento do projeto, optamos por não utilizar a técnica de programação em par. A decisão foi tomada em conjunto pelo grupo e se baseou em alguns fatores: organizaçao do tempo, as disponibilidades de horarios eram diferentes, o que acabava complicando, e divisao de tarefas, onde preferimos distribiuir os afazeres de forma individual , o que permitiu maior autonomia e produtividade individual.
+
+
 
  
 
