@@ -167,7 +167,7 @@ Implementar pelo menos 3 histórias selecionadas do backlog, garantindo:
 
 ## 📌 Quadro da Sprint 2
 
-[Print do Quadro da Sprint 2](https://github.com/user-attachments/assets/aaeebf23-d22a-4ad3-bf8b-698ff1e69af9)
+[Print do Quadro da Sprint 2](<img width="1427" height="225" alt="print sprint" src="https://github.com/user-attachments/assets/46a7415f-37b6-412e-9ad6-2d1ed304e668" />)
 
 Histórias selecionadas:
 - SCRUM-2: Filtro
@@ -189,7 +189,7 @@ Histórias selecionadas:
 - Issue tracker atualizado com bugs e melhorias
 
 ## 🚀 Deploy
-- [Link para o sistema em produção](https://enertech-b562.onrender.com)
+- [Link do Deploy:](https://enertech-b562.onrender.com)
 
 ## 🎥 Screencast
 [Link para o screencast](https://youtu.be/jMHKG2hMUsI?si=onBhtmm84sfaa9-f)
