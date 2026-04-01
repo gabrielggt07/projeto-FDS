@@ -188,8 +188,8 @@ Histórias selecionadas:
 - Commits semanais documentando progresso
 - Issue tracker atualizado com bugs e melhorias
 
-## 🚀 Deploy
-- [Link do Deploy:](https://enertech-b562.onrender.com)
+## 🚀 Link do Deploy
+- https://enertech-b562.onrender.com
 
 ## 🎥 Screencast
 [Link para o screencast](https://youtu.be/jMHKG2hMUsI?si=onBhtmm84sfaa9-f)
