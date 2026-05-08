@@ -257,7 +257,7 @@ Implementar novas funcionalidades relacionadas à experiência do usuário e loc
 
 **Sprint:** quadro Sprint 3 — 25 abr – 2 mai (2 tickets)
 
-[Print do Quadro da Sprint 3](<img width="1442" height="848" alt="Captura de Tela 2026-05-08 às 08 39 16" src="https://github.com/user-attachments/assets/715e3dfb-599a-4e07-964c-56be8d84473b" />)
+[Print do Quadro da Sprint 3](https://github.com/user-attachments/assets/715e3dfb-599a-4e07-964c-56be8d84473b)
 
 ### Histórias selecionadas:
 
@@ -267,7 +267,7 @@ Implementar novas funcionalidades relacionadas à experiência do usuário e loc
 ---
 
 ## 📋 Backlog
-[Print do Backlog](<img width="1417" height="183" alt="Captura de Tela 2026-05-08 às 08 32 44" src="https://github.com/user-attachments/assets/4e17010a-29b5-4c3c-aa28-2627a5f63c81" />)
+[Print do Backlog](https://github.com/user-attachments/assets/4e17010a-29b5-4c3c-aa28-2627a5f63c81)
 
 - SCRUM-9: Agendamento de recarga
 - SCRUM-10: Distância até eletroposto
