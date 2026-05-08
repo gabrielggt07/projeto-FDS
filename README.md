@@ -268,12 +268,9 @@ Implementar novas funcionalidades relacionadas à experiência do usuário e loc
 
 ## 📋 Backlog
 [Print do Backlog](<img width="1417" height="183" alt="Captura de Tela 2026-05-08 às 08 32 44" src="https://github.com/user-attachments/assets/4e17010a-29b5-4c3c-aa28-2627a5f63c81" />)
-Histórias que permanecem pendentes para próximas entregas:
 
-* **SCRUM-4:** Avaliação
-* **SCRUM-6:** Cadastro de usuário
-* **SCRUM-7:** Login inválido
-* **SCRUM-8:** Ranking de eletropostos
+- SCRUM-9: Agendamento de recarga
+- SCRUM-10: Distância até eletroposto
 
 ---
 
