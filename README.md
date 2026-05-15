@@ -157,6 +157,7 @@ Este projeto está sob a licença MIT.
 -------------------------------------------------------------------------------------------------------------------
 
 ## Entrega 02 - (30/03):
+
 ## 🎯 Objetivo da Sprint 2
 Implementar pelo menos 3 histórias selecionadas do backlog, garantindo:
 - Versionamento ativo com commits semanais
@@ -288,6 +289,18 @@ Implementar novas funcionalidades relacionadas à experiência do usuário e loc
 
 ## 🎥 Screencast
 [Link para o screencast](https://youtu.be/F9EFx8x7fEQ?si=dq450Kz7wLFkS81B)
+
+## Entrega 04 - (18/05):
+
+## 🎯 Objetivo da Sprint 4
+
+Finalizar as histórias que faltam do backlog do projeto e implementar a automação dos processos de testes e deploy, garantindo:
+* Implementação das histórias restantes (atingindo o mínimo do projeto)
+* Criação e gerenciamento da Sprint 04 no JIRA
+* Ambiente de versionamento atuante (commits frequentes de código)
+* Configuração de CI/CD com build, testes e deploy automatizados no GitHub
+* Testes de sistema (E2E) automatizados e rodando na esteira
+* Documentação clara no arquivo README e criação do CONTRIBUTING.md
 
 
 
